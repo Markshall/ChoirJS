@@ -7,28 +7,20 @@ choir.core.on('start', () => {
 });
 
 /*
- * Receiving GET requests on /
+ * Registering route to registry.
+ * choir.registry.add(<regex or path>, <name>)
  */
-choir.route.get.on('/', (req, res) => {
-  res.send('<h1>Holy cow</h1>');
+choir.registry.add('/', 'index');
+
+choir.route.get.on('index', (req, res) => {
+  res.send('Test');
 });
 
-/*
- * Receiving POST requests on /json
- */
-choir.route.post.on('/json', (req, res) => {
-  res.header.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({
-    holy: 'cow',
-  }));
-});
+// POST with regex.
+choir.registry.add(/^\/json([0-9])$/, 'json');
 
-/*
- * Receiving POST requests on /json1
- */
-choir.route.post.on('/json1', (req, res) => {
+choir.route.post.on('json', (req, res) => {
   res.json({
-    holy: 'cow',
-    it: 'works',
+    parameter: req.params[0],
   });
 });

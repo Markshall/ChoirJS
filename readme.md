@@ -5,7 +5,9 @@ An event-driven web framework created for laughs.
 const choir = require('choirjs');
 const app = new choir(8080);
 
-app.route.get.on('/', (req, res) => {
+app.registry.add('/', 'index');
+
+app.route.get.on('index', (req, res) => {
 	res.send('o7');
 });
 ```

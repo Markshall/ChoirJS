@@ -1,6 +1,6 @@
 {
   "name": "choirjs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "An event-driven web framework created for laughs.",
   "main": "dist/index.js",
   "scripts": {
@@ -23,6 +23,7 @@
   },
   "nodemonConfig": {},
   "dependencies": {
-    "merge-descriptors": "^1.0.1"
+    "merge-descriptors": "^1.0.1",
+    "pattern-emitter": "^1.0.0"
   }
 }

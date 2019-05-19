@@ -17,6 +17,8 @@ var _response = _interopRequireDefault(require("./response"));
 
 var _header = _interopRequireDefault(require("./header"));
 
+var _registry = _interopRequireDefault(require("./registry"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35,6 +37,8 @@ function () {
 
     this.route = new _route["default"](); // Route Events
 
+    this.registry = new _registry["default"]();
+
     var server = _http["default"].createServer(this.server.bind(this));
 
     server.listen(port, this.listen.bind(this));
@@ -51,18 +55,32 @@ function () {
       res.header = new _header["default"]();
       (0, _mergeDescriptors["default"])(res, (0, _response["default"])(res)); // Merge NodeJS's http response with a few extra functions.
 
-      switch (req.method) {
-        case 'POST':
-          this.route.post.emit(req.url, req, res);
-          break;
+      /*
+       * Run a check against the route registry.
+       */
 
-        case 'GET':
-          this.route.get.emit(req.url, req, res);
-          break;
+      var routeCheck = this.registry.check(req.url);
 
-        default:
-          res.writeHead(404);
-          break;
+      if (routeCheck.error) {
+        res.writeHead(404);
+        res.write('Route not found in registry.');
+        res.end();
+      } else {
+        req.params = routeCheck.exec;
+
+        switch (req.method) {
+          case 'POST':
+            this.route.post.emit(routeCheck.route, req, res);
+            break;
+
+          case 'GET':
+            this.route.get.emit(routeCheck.route, req, res);
+            break;
+
+          default:
+            res.writeHead(404);
+            break;
+        }
       }
     }
   }]);
