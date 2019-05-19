@@ -1,9 +1,10 @@
 import Choir from '../index';
 
-const choir = new Choir(8080);
+const port = 8080;
+const choir = new Choir(port);
 
 choir.core.on('start', () => {
-  console.log('Choir started on port 8080.');
+  console.log(`ChoirJS started on port ${port}`);
 });
 
 /*

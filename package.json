@@ -23,7 +23,6 @@
   },
   "nodemonConfig": {},
   "dependencies": {
-    "merge-descriptors": "^1.0.1",
-    "pattern-emitter": "^1.0.0"
+    "merge-descriptors": "^1.0.1"
   }
 }
