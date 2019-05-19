@@ -16,7 +16,7 @@ choir.route.get.on('/', (req, res) => {
 /*
  * Receiving POST requests on /json
  */
-choir.route.get.on('/json', (req, res) => {
+choir.route.post.on('/json', (req, res) => {
   res.header.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({
     holy: 'cow',
@@ -26,7 +26,7 @@ choir.route.get.on('/json', (req, res) => {
 /*
  * Receiving POST requests on /json1
  */
-choir.route.get.on('/json1', (req, res) => {
+choir.route.post.on('/json1', (req, res) => {
   res.json({
     holy: 'cow',
     it: 'works',
