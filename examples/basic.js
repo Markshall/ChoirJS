@@ -17,11 +17,16 @@ choir.route.get.on('index', (req, res) => {
   res.send('Test');
 });
 
-// POST with regex.
-choir.registry.add(/^\/json([0-9])$/, 'json');
+/*
+ * POST with REGEX
+ * /json[0-9]/[a-zA-Z]
+ */
+choir.registry.add(/^\/json([0-9])\/([a-zA-Z])$/, 'json');
 
 choir.route.post.on('json', (req, res) => {
+  // console.log(req.params);
   res.json({
-    parameter: req.params[0],
+    zero: req.params[0],
+    one: req.params[1],
   });
 });
