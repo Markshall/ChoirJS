@@ -19,6 +19,8 @@ var _header = _interopRequireDefault(require("./header"));
 
 var _registry = _interopRequireDefault(require("./registry"));
 
+var _serve = _interopRequireDefault(require("./serve"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38,6 +40,7 @@ function () {
     this.route = new _route["default"](); // Route Events
 
     this.registry = new _registry["default"]();
+    this.serve = [];
 
     var server = _http["default"].createServer(this.server.bind(this));
 
@@ -47,7 +50,13 @@ function () {
   _createClass(Choir, [{
     key: "listen",
     value: function listen() {
+      var serve = new _serve["default"](this.serve, this.route, this.registry);
       this.core.emit('start');
+    }
+  }, {
+    key: "files",
+    value: function files(directory) {
+      this.serve.push(directory);
     }
   }, {
     key: "server",

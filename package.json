@@ -1,6 +1,6 @@
 {
   "name": "choirjs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "An event-driven web framework created for laughs.",
   "main": "dist/index.js",
   "repository": {
