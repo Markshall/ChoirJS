@@ -23,6 +23,17 @@ module.exports = function (res) {
       res.head();
       res.write(JSON.stringify(val));
       res.end();
+    },
+
+    /*
+     * 404 Error.
+     */
+    notFound: function notFound() {
+      var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      res.header.setStatus(404);
+      res.head();
+      res.write(message !== null ? message : 'Route not found in registry.');
+      res.end();
     }
   };
   return response;

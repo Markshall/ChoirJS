@@ -32,7 +32,12 @@ function () {
     key: "check",
     value: function check(url) {
       for (var i = 0; i < this.routes.length; i += 1) {
+        /*
+         * Check if the route field is a regex or string.
+         */
+        // console.log(this.routes);
         if (typeof this.routes[i].route.test === 'function') {
+          // console.log(url.replace('/', ''));
           if (this.routes[i].route.test(url)) {
             var exec = this.routes[i].route.exec(url);
             /*

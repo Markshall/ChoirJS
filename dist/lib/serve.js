@@ -17,6 +17,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+// https://www.npmjs.com/package/mime
+
 /*
  * Serve static files in directories.
  * There might be a better way to do this. Feel free to update this.
@@ -30,47 +32,47 @@ function () {
     this.directories = directories;
     this.route = route;
     this.registry = registry;
-    this.files = [];
-
-    for (var i = 0; i < this.directories.length; i += 1) {
-      var files = this.list(this.directories[i]);
-
-      for (var f = 0; f < files.length; f += 1) {
-        // console.log(files[f]);
-        this.serve(files[f]);
-      }
-    }
+    this.register();
   }
 
   _createClass(Serve, [{
-    key: "list",
-    value: function list(directory, fileList) {
-      var _this = this;
+    key: "register",
+    value: function register() {
+      for (var i = 0; i < this.directories.length; i += 1) {
+        /*
+         * Check if the entry is a directory or not via regex.
+         * ^(.*)\/$
+         */
+        var name = null; // Name of the route;
 
-      var files = _fs["default"].readdirSync(directory);
+        var regex = null;
 
-      fileList = fileList || [];
-      files.forEach(function (file) {
-        if (_fs["default"].statSync("".concat(directory, "/").concat(file)).isDirectory()) {
-          fileList = _this.list("".concat(directory, "/").concat(file, "/"), fileList);
+        if (/^(.*)\/$/.test(this.directories[i])) {
+          name = this.directories[i];
+          regex = new RegExp("^(".concat(this.directories[i], ")((?!.*\\.\\.))"));
         } else {
-          fileList.push("".concat(directory).concat(file));
+          name = this.directories[i];
+          regex = name;
         }
-      });
-      return fileList;
-    }
-  }, {
-    key: "serve",
-    value: function serve(file) {
-      this.registry.add("/".concat(file), "/".concat(file)); // console.log(this.registry.routes);
 
-      this.route.get.on("/".concat(file), function (req, res) {
-        // console.log(req.url);
-        res.header.setHeader('Content-Type', _mime["default"].getType(req.url.replace('/', '')));
-        res.head();
-        res.write(_fs["default"].readFileSync(req.url.replace('/', '')));
-        res.end();
-      });
+        this.registry.add(regex, name);
+        this.route.get.on(name, function (req, res) {
+          /*
+           * Replace the first instance of "/" in req.url
+           * so that fs won't think to look for file from root.
+           */
+          var file = req.url.replace('/', '');
+
+          _fs["default"].readFile(file, function (err, data) {
+            if (err) {
+              res.notFound();
+            } else {
+              res.header.setHeader('Content-Type', _mime["default"].getType(file));
+              res.send(data);
+            }
+          });
+        });
+      }
     }
   }]);
 

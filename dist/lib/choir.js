@@ -71,9 +71,7 @@ function () {
       var routeCheck = this.registry.check(req.url);
 
       if (routeCheck.error) {
-        res.writeHead(404);
-        res.write('Route not found in registry.');
-        res.end();
+        res.notFound();
       } else {
         req.params = routeCheck.exec;
 

@@ -19,11 +19,11 @@ choir.route.get.on('index', (req, res) => {
 
 /*
  * POST with REGEX
- * /json[0-9]/[a-zA-Z]
+ * /json[0-9]/[a-zA-Z]*
  */
-choir.registry.add(/^\/json([0-9])\/([a-zA-Z])$/, 'json');
+choir.registry.add(/^\/json([0-9])\/([a-zA-Z]*)$/, 'json');
 
-choir.route.post.on('json', (req, res) => {
+choir.route.get.on('json', (req, res) => {
   // console.log(req.params);
   res.json({
     zero: req.params[0],
