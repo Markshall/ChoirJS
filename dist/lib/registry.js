@@ -23,9 +23,11 @@ function () {
   _createClass(Registry, [{
     key: "add",
     value: function add(regex, name) {
+      var middleware = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
       this.routes.push({
         route: regex,
-        name: name
+        name: name,
+        middleware: Array.isArray(middleware) ? middleware : [middleware]
       });
     }
   }, {
@@ -51,6 +53,7 @@ function () {
             return {
               error: false,
               route: this.routes[i].name,
+              middleware: this.routes[i].middleware,
               exec: exec
             };
           }
@@ -58,6 +61,7 @@ function () {
           return {
             error: false,
             route: this.routes[i].name,
+            middleware: this.routes[i].middleware,
             exec: null
           };
         }

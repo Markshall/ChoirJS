@@ -23,7 +23,7 @@ choir.route.get.on('index', (req, res) => {
  */
 choir.registry.add(/^\/json([0-9])\/([a-zA-Z]*)$/, 'json');
 
-choir.route.get.on('json', (req, res) => {
+choir.route.post.on('json', (req, res) => {
   // console.log(req.params);
   res.json({
     zero: req.params[0],

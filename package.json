@@ -1,6 +1,6 @@
 {
   "name": "choirjs",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "An event-driven web framework created for laughs.",
   "main": "dist/index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon examples/basic.js --exec babel-node",
+    "dev": "nodemon examples/static.js --exec babel-node",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --copy-files"
   },
   "author": "Jian Ting <me@jtpox.com>",

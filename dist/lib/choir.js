@@ -74,19 +74,42 @@ function () {
         res.notFound();
       } else {
         req.params = routeCheck.exec;
+        /*
+         * Run middlewares first.
+         */
 
-        switch (req.method) {
-          case 'POST':
-            this.route.post.emit(routeCheck.route, req, res);
-            break;
+        var i = 0;
 
-          case 'GET':
-            this.route.get.emit(routeCheck.route, req, res);
-            break;
+        if (routeCheck.middleware.length > 0) {
+          var next = function next() {
+            i += 1;
 
-          default:
-            res.writeHead(404);
-            break;
+            if (i < routeCheck.middleware.length) {
+              routeCheck.middleware[i](req, res, next);
+            }
+          };
+
+          routeCheck.middleware[i](req, res, next);
+        }
+        /*
+         * If all the middleware is ran, proceed to main course.
+         */
+
+
+        if (i === routeCheck.middleware.length) {
+          switch (req.method) {
+            case 'POST':
+              this.route.post.emit(routeCheck.route, req, res);
+              break;
+
+            case 'GET':
+              this.route.get.emit(routeCheck.route, req, res);
+              break;
+
+            default:
+              res.writeHead(404);
+              break;
+          }
         }
       }
     }
