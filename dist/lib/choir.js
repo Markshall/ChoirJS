@@ -133,3 +133,4 @@ function () {
 }();
 
 exports["default"] = Choir;
+//# sourceMappingURL=choir.js.map

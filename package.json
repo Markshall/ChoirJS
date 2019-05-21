@@ -3,17 +3,29 @@
   "version": "1.0.10",
   "description": "An event-driven web framework created for laughs.",
   "main": "dist/index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jtpox/ChoirJS.git"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon examples/template.js --exec babel-node",
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --copy-files"
+    "build": "rimraf dist/ && babel -d ./dist --ignore node_modules/,examples/ . -s",
+    "publish": "npm run build && npm publish"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jtpox/ChoirJS.git"
+  },
+  "keywords": [
+    "web",
+    "framework",
+    "router",
+    "app",
+    "api"
+  ],
   "author": "Jian Ting <me@jtpox.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jtpox/ChoirJS/issues"
+  },
+  "homepage": "https://github.com/jtpox/ChoirJS#readme",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
@@ -25,7 +37,6 @@
     "nodemon": "^1.19.0",
     "rimraf": "^2.6.3"
   },
-  "nodemonConfig": {},
   "dependencies": {
     "merge-descriptors": "^1.0.1",
     "mime": "^2.4.3"

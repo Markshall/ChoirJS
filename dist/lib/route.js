@@ -22,3 +22,4 @@ var Route = function Route() {
 };
 
 exports["default"] = Route;
+//# sourceMappingURL=route.js.map

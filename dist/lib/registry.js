@@ -77,3 +77,4 @@ function () {
 }();
 
 exports["default"] = Registry;
+//# sourceMappingURL=registry.js.map

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../index.js"],"names":["module","exports","Choir"],"mappings":";;AAAA;;;;AAEAA,MAAM,CAACC,OAAP,GAAiBC,iBAAjB","sourcesContent":["import Choir from './lib/choir';\n\nmodule.exports = Choir;\n"],"file":"index.js"}

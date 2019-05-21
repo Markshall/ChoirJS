@@ -51,3 +51,4 @@ module.exports = function (res) {
   };
   return response;
 };
+//# sourceMappingURL=response.js.map
