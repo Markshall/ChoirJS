@@ -41,6 +41,11 @@ function () {
 
     this.registry = new _registry["default"]();
     this.serve = [];
+    this.template = {
+      name: null,
+      directory: null,
+      callback: null
+    };
 
     var server = _http["default"].createServer(this.server.bind(this));
 
@@ -59,9 +64,18 @@ function () {
       this.serve.push(directory);
     }
   }, {
+    key: "engine",
+    value: function engine(name, directory, callback) {
+      this.template.name = name;
+      this.template.directory = directory;
+      this.template.callback = callback;
+    }
+  }, {
     key: "server",
     value: function server(req, res) {
       res.header = new _header["default"]();
+      res.template = this.template; // Adding the template object to response.
+
       (0, _mergeDescriptors["default"])(res, (0, _response["default"])(res)); // Merge NodeJS's http response with a few extra functions.
 
       /*

@@ -7,6 +7,19 @@ module.exports = function (res) {
     },
 
     /*
+     * Render from template.
+     */
+    render: function render(template, options) {
+      res.template.callback("".concat(res.template.directory, "/").concat(template, ".").concat(res.template.name), options, function (err, render) {
+        if (err) {
+          res.notFound('Template file not found.');
+        } else {
+          res.send(render);
+        }
+      });
+    },
+
+    /*
      * For sending ordinary data.
      */
     send: function send(val) {
