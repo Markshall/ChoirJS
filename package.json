@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "nodemon examples/template.js --exec babel-node",
-    "build": "rimraf dist/ && babel -d ./dist --ignore node_modules/,test/,examples/ . -s",
+    "dev": "nodemon examples/basic.js --exec babel-node",
+    "build": "rimraf dist/ && babel -d ./dist --ignore test.js,node_modules/,test/,examples/ . -s",
     "publish": "npm run build && npm publish"
   },
   "repository": {

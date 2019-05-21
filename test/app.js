@@ -4,20 +4,19 @@ var chai = require('chai');
 
 var chaiHttp  = require('chai-http');
 
-var choir = require('../dist/index');
+var choir = require('../test');
 
 var expect = chai.expect;
 
 chai.use(chaiHttp);
 
-var choir = new choir(8080);
-
-describe('routes', () => {
+describe('Requests', () => {
     var request = chai.request('http://localhost:8080');
+    
+    choir.registry.add('/', 'index');
+    choir.registry.add('/json', 'json');
 
-    it('should emit a GET event', (done) => {
-        choir.registry.add('/', 'index');
-
+    it('Should emit a GET event with HTML content.', (done) => {
         choir.route.get.on('index', (req, res) => {
             res.send('Test');
         });
@@ -29,16 +28,28 @@ describe('routes', () => {
         });
     });
 
-    it('should emit a POST event', (done) => {
-        choir.registry.add('/', 'index');
-
+    it('Should emit a POST event with HTML content.', (done) => {
         choir.route.post.on('index', (req, res) => {
             res.send('Test');
         });
 
-        request.get('/').end((err, res) => {
+        request.post('/').end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
+            done();
+        });
+    });
+
+    it('Should emit a GET event with JSON content.', (done) => {
+        choir.route.get.on('json', (req, res) => {
+            res.json({
+                test: true,
+            });
+        });
+
+        request.get('/json').end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
             done();
         });
     });
