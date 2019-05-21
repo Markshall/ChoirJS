@@ -46,10 +46,8 @@ function () {
       directory: null,
       callback: null
     };
-
-    var server = _http["default"].createServer(this.server.bind(this));
-
-    server.listen(port, this.listen.bind(this));
+    this.app = _http["default"].createServer(this.server.bind(this));
+    this.app.listen(port, this.listen.bind(this));
   }
 
   _createClass(Choir, [{

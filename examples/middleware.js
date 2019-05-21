@@ -1,5 +1,4 @@
 import Choir from '../index';
-import { ENETRESET } from 'constants';
 
 /*
  * An example on how to create a middleware.
