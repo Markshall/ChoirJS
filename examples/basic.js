@@ -1,4 +1,9 @@
-import { Choir, Body } from '../index';
+/*
+ * Import Choir and Tools
+ * Tools:
+ *  - Body (For getting request body, will come out unparsed.)
+ */
+import { Choir, Tools } from '../index';
 
 const port = 8080;
 const choir = new Choir(port);
@@ -6,6 +11,8 @@ const choir = new Choir(port);
 choir.core.on('start', () => {
   console.log(`ChoirJS started on port ${port}`);
 });
+
+choir.middleware.use(Tools.Body);
 
 /*
  * Registering route to registry.

@@ -1,13 +1,13 @@
 {
   "name": "choirjs",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "description": "An event-driven web framework created for laughs.",
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "nodemon examples/basic.js --exec babel-node",
-    "build": "rimraf dist/ && babel -d ./dist --ignore test.js,node_modules/,test/,examples/ . -s",
-    "publish": "npm run build && npm publish"
+    "dev": "nodemon examples/static.js --exec babel-node",
+    "middleware": "nodemon lib/test_middleware.js --exec babel-node",
+    "build": "rimraf dist/ && babel -d ./dist --ignore node_modules/,test/,examples/ . -s"
   },
   "repository": {
     "type": "git",

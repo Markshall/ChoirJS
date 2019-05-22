@@ -1,3 +1,11 @@
 import Choir from './lib/choir';
 
-module.exports = Choir;
+// Tools
+import Body from './lib/tools/body';
+
+module.exports = {
+  Choir,
+  Tools: {
+    Body,
+  },
+};

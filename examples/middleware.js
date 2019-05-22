@@ -1,4 +1,4 @@
-import Choir from '../index';
+import { Choir } from '../index';
 
 /*
  * An example on how to create a middleware.
@@ -15,7 +15,7 @@ choir.core.on('start', () => {
  * adding global middleware.
  * Middleware applies to all routes.
  */
-choir.middleware((req, res, next) => {
+choir.middleware.use((req, res, next) => {
   console.log(`On URL: ${req.url}`);
   next();
 });
@@ -28,6 +28,7 @@ const userCheck = (req, res, next) => {
   if (req.params[0] === '0') {
     res.notFound('User does not exist');
   } else {
+    req.haha = 1;
     next();
   }
 };

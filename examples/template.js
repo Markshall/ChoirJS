@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import Choir from '../index';
+import { Choir } from '../index';
 
 /*
  * An example on how to develop a template engine.

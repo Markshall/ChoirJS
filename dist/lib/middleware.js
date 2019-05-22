@@ -16,29 +16,87 @@ var Middleware =
 function () {
   function Middleware() {
     _classCallCheck(this, Middleware);
+
+    this.middlewares = []; // this.event.on('end', () => console.log('End middleware called.'));
   }
 
-  _createClass(Middleware, null, [{
-    key: "run",
-    value: function run(wares, req, res) {
-      var i = 0;
+  _createClass(Middleware, [{
+    key: "use",
+    value: function use(middleware) {
+      if (Array.isArray(middleware)) {
+        this.middlewares = this.middlewares.concat(middleware);
+      } else {
+        this.middlewares.push(middleware);
+      }
+    }
+    /*
+     * Don't fully know how this works, but hey, it works!
+     */
 
-      if (wares.length > 0) {
-        /*
-         * next() will up the counter (i) and move on to next in the array.
-         */
-        var next = function next() {
-          i += 1;
-
-          if (i < wares.length) {
-            wares[i](req, res, next);
-          }
+  }, {
+    key: "execute",
+    value: function execute(middlewares, req, res, next) {
+      var self = this;
+      var composition = middlewares.reduceRight(function (next, fn) {
+        return function (rq, rs) {
+          // collect next data
+          var request = req;
+          var response = res;
+          fn(request, response, next);
         };
+      }, next);
+      composition(req, res);
+    }
+  }, {
+    key: "run",
+    value: function run(request, response, route, routeCheck) {
+      var _this = this;
 
-        wares[i](req, res, next);
+      var middlewares = this.middlewares;
+      /*
+       * Merge middlewares with route.
+       */
+
+      if (Array.isArray(routeCheck.middleware)) {
+        middlewares = middlewares.concat(routeCheck.middleware);
+      } else {
+        middlewares.push(routeCheck.middleware);
       }
 
-      return i;
+      return this.execute(middlewares, request, response, function (req, res, next) {
+        _this.runRoute(route, routeCheck, request, response);
+      });
+    }
+  }, {
+    key: "runRoute",
+    value: function runRoute(route, routeCheck, req, res) {
+      var self = this;
+
+      switch (req.method) {
+        case 'POST':
+          route.post.emit(routeCheck.route, req, res);
+          break;
+
+        case 'GET':
+          route.get.emit(routeCheck.route, req, res);
+          break;
+
+        case 'PUT':
+          route.put.emit(routeCheck.route, req, res);
+          break;
+
+        case 'DELETE':
+          route["delete"].emit(routeCheck.route, req, res);
+          break;
+
+        case 'OPTIONS':
+          route.options.emit(routeCheck.route, req, res);
+          break;
+
+        default:
+          res.writeHead(404);
+          break;
+      }
     }
   }]);
 

@@ -21,7 +21,7 @@ var _registry = _interopRequireDefault(require("./registry"));
 
 var _serve = _interopRequireDefault(require("./serve"));
 
-var _middleware2 = _interopRequireDefault(require("./middleware"));
+var _middleware = _interopRequireDefault(require("./middleware"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -41,6 +41,7 @@ function () {
 
     this.route = new _route["default"](); // Route Events
 
+    this.middleware = new _middleware["default"]();
     this.registry = new _registry["default"]();
     this.serve = [];
     this.globalMiddleware = [];
@@ -63,20 +64,6 @@ function () {
     key: "files",
     value: function files(directory) {
       this.serve.push(directory);
-    }
-    /*
-     * Global middleware.
-     * middleware: accepts array or function.
-     */
-
-  }, {
-    key: "middleware",
-    value: function middleware(_middleware) {
-      if (Array.isArray(_middleware)) {
-        this.globalMiddleware.concat(_middleware);
-      } else {
-        this.globalMiddleware.push(_middleware);
-      }
     }
   }, {
     key: "engine",
@@ -103,74 +90,16 @@ function () {
         res.notFound();
       } else {
         req.params = routeCheck.exec;
-
-        if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-          this.handleFormRequest(routeCheck, req, res);
-        } else {
-          req.body = null;
-          this.handleRequest(routeCheck, req, res);
-        }
+        this.handleRequest(routeCheck, req, res);
       }
-    }
-  }, {
-    key: "handleFormRequest",
-    value: function handleFormRequest(routeCheck, req, res) {
-      var _this = this;
-
-      var body = '';
-      req.on('data', function (data) {
-        body += data;
-      });
-      req.on('end', function () {
-        req.body = body;
-
-        _this.handleRequest(routeCheck, req, res);
-      });
     }
   }, {
     key: "handleRequest",
     value: function handleRequest(routeCheck, req, res) {
       /*
-         * Run global middlewares first.
-         */
-      var globalMiddlewareCheck = _middleware2["default"].run(this.globalMiddleware, req, res);
-      /*
        * Run route middlewares.
        */
-
-
-      var routeMiddlewareCheck = globalMiddlewareCheck === this.globalMiddleware.length ? _middleware2["default"].run(routeCheck.middleware, req, res) : 0;
-      /*
-       * If all the middleware is ran, proceed to main course.
-       */
-
-      if (routeMiddlewareCheck === routeCheck.middleware.length) {
-        switch (req.method) {
-          case 'POST':
-            this.route.post.emit(routeCheck.route, req, res);
-            break;
-
-          case 'GET':
-            this.route.get.emit(routeCheck.route, req, res);
-            break;
-
-          case 'PUT':
-            this.route.put.emit(routeCheck.route, req, res);
-            break;
-
-          case 'DELETE':
-            this.route["delete"].emit(routeCheck.route, req, res);
-            break;
-
-          case 'OPTIONS':
-            this.route.options.emit(routeCheck.route, req, res);
-            break;
-
-          default:
-            res.writeHead(404);
-            break;
-        }
-      }
+      this.middleware.run(req, res, this.route, routeCheck);
     }
   }]);
 

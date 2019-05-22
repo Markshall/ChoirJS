@@ -1,4 +1,4 @@
-import Choir from '../index';
+import { Choir } from '../index';
 
 const port = 8080;
 const choir = new Choir(port);
