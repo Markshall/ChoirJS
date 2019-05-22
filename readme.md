@@ -2,8 +2,8 @@
 An event-driven web framework created for laughs.
 
 ```
-const choir = require('choirjs');
-const app = new choir(8080);
+const { Choir } = require('choirjs');
+const app = new Choir(8080);
 
 app.registry.add('/', 'index');
 
