@@ -12,6 +12,15 @@ choir.core.on('start', () => {
 });
 
 /*
+ * adding global middleware.
+ * Middleware applies to all routes.
+ */
+choir.middleware((req, res, next) => {
+  console.log(`On URL: ${req.url}`);
+  next();
+});
+
+/*
  * Middleware
  * choir.register.add(<regex or path>, <name>, <middleware>)
  */
