@@ -19,6 +19,9 @@ var Route = function Route() {
    */
   this.get = new _events["default"]();
   this.post = new _events["default"]();
+  this.put = new _events["default"]();
+  this["delete"] = new _events["default"]();
+  this.options = new _events["default"]();
 };
 
 exports["default"] = Route;
